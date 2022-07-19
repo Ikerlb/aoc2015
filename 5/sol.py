@@ -18,18 +18,24 @@ def is_nice_p1(s):
     return vowels <= 0 and twice and third
 
 def is_nice_p2(s):
-    fst = snd = False        
     prev = None
     rep = set() 
     if not any(w[0] == w[-1] for w in window(s, 3)):
         return False
-       
+    d = {}
+    for i, w in enumerate(window(s, 2)):
+        if w in d and i - d[w] >= 2:
+            return True
+        elif w not in d:
+            d[w] = i    
+    return False
+
+def count_nice(words, f):
+    return sum(1 for w in words if f(w))
 
 words = []
 for line in stdin:
     words.append(line[:-1])
 
-def part1(words):
-    return sum(1 for w in words if is_nice_p1(w))
-
-print(part1(words))
+print(count_nice(words, is_nice_p1)) # part 1
+print(count_nice(words, is_nice_p2)) # part 2
